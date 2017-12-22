@@ -1,0 +1,49 @@
+task terraformInit(type: Exec) {
+   workingDir 'terraformfiles'
+   commandLine terraformBin, 'init'   
+}
+
+task cleanNodeModules(type: Delete){
+   delete 'node_modules'
+}
+
+task npmInstallModules (type:Exec, dependsOn: 'cleanNodeModules') {
+   commandLine npmBin, 'install', '--production'
+}
+
+
+task deploymentRemediationZipFiles(type: Zip, dependsOn: 'npmInstallModules') {
+   from '.'
+   include 'dynatrace_utils.js'
+   include 'event.js'
+   include 'config/main.js'
+   include 'config/config.global.js'
+   include "config/config.${envname}.js"
+   include 'node_modules/**' 
+   include 'remediation.js'
+   include 'remediationactions/**'
+   archiveName 'build/remediation.zip'
+}
+
+task plan (type:Exec, dependsOn:['terraformInit', 'deploymentRemediationZipFiles']) {
+  println 'executing task plan'
+  workingDir 'terraformfiles'
+	commandLine terraformBin, 'plan', '-var-file='+myTerraformVars, "-state=${envname}.tfstate", "-var=envname=${envname}", "-var=useremail=${useremail}"
+}
+
+task apply (type:Exec, dependsOn:['terraformInit', 'deploymentRemediationZipFiles']) {
+   workingDir 'terraformfiles'
+   standardInput = System.in
+   commandLine terraformBin, 'apply', '-var-file='+myTerraformVars, "-auto-approve", "-state=${envname}.tfstate", "-var=envname=${envname}", "-var=useremail=${useremail}"
+}
+
+task planDestroy (type:Exec, dependsOn:['terraformInit', 'deploymentRemediationZipFiles']) {
+   workingDir 'terraformfiles'
+   commandLine terraformBin, 'plan', '-destroy', '-var-file='+myTerraformVars, "-state=${envname}.tfstate", "-var=envname=${envname}"
+}
+
+task destroy (type:Exec, dependsOn:['terraformInit', 'deploymentRemediationZipFiles']) {
+   workingDir 'terraformfiles'
+   standardInput = System.in
+   commandLine terraformBin, 'destroy', '-var-file='+myTerraformVars, "-state=${envname}.tfstate", "-var=envname=${envname}"
+}

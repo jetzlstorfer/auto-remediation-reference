@@ -1,0 +1,23 @@
+{
+  "name": "autoremediation",
+  "version": "1.0.0",
+  "description": "Lambda functions for autoremediation scenarios",
+  "author": "Juergen Etzlstorfer <juergen.etzlstorfer@dynatrace.com>, reusing work from Rafal Psciuk",
+  "repository": "",
+  "scripts": {
+    "test": "cross-env NODE_ENV=demo2 ./node_modules/.bin/mocha --reporter spec ./test/**/*.spec.js"
+  },
+  "dependencies": {
+    "superagent": "^3.8.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.162.0",
+    "chai": "^4.1.2",
+    "cross-env": "^5.1.0",
+    "lambda-local": "^1.4.4",
+    "lambda-tester": "^3.1.0",
+    "mocha": "^4.0.1",
+    "nock": "9.0.22",
+    "rewire": "^2.5.2"
+  }
+}
