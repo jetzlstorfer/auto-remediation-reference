@@ -1,7 +1,7 @@
 var env = process.env.NODE_ENV || 'global';
 var cfg = require('./config.' + env);
 
-cfg.clusterUrl = process.env.CLUSTER || cfg.clusterUrl;
+cfg.clusterUrl = process.env.CLUSTER || cfg.cluster;
 cfg.environment = process.env.ENV || cfg.environment;
 cfg.monitoredHost = process.env.MONITORED_HOST || cfg.monitoredHost;
 cfg.marathonUrl = process.env.MARATHON_URL || cfg.marathonUrl;
@@ -14,9 +14,9 @@ cfg.threshold = process.env.LOAD_THRESHOLD || cfg.threshold;
 cfg.servicesNormal = process.env.SERVICES_NORMAL || cfg.servicesNormal;
 cfg.servicesHigh = process.env.SERVICES_HIGH || cfg.servicesHigh;
 
-// if (cfg.clusterUrl == '' || cfg.clusterUrl == undefined) {
-//   console.error("incorrect configuration - please set correct environment variable for config");
-//   process.exit(1);
-// }
+if (cfg.clusterUrl == '' || cfg.clusterUrl == undefined) {
+  console.error("incorrect configuration - please double check or set correct environment variables");
+  process.exit(1);
+}
 
 module.exports = cfg;

@@ -53,7 +53,6 @@ http.createServer(function (req, res) {
 
 }).listen(config.localport, config.localhost);
 
-
 console.log('Server running at ' + config.localhost + ':' + config.localport);
 
 

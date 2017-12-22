@@ -69,6 +69,6 @@ myterraform2.tfvars
 terraformfiles/demo2.tfstate
 terraformfiles/demo2.tfstate.backup
 terraformfiles/.terraform/plugins/windows_amd64/lock.json
-
 *.tfstate
 *.backup
+test/
