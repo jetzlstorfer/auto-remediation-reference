@@ -11,6 +11,10 @@ const Event = require('./event');
 
 
 exports.handler = function (event, context, callback) {
+  // check if called from azure, since azure does not support console.log
+  checkAzureEnvironment(context);
+
+  console.log('azure remediation start (console)');
   console.info("--- remediation script start ---");
   // console.info(JSON.stringify(event));
   var myEvent = new Event(event);
@@ -58,7 +62,7 @@ exports.handler = function (event, context, callback) {
           console.info("root cause for PID " + myEvent.pid + ": " + JSON.stringify(myRootCause.eventType));
           triggerRemediationAction(myProblem, myRootCause, function (err, res, remediationAction) {
             if (err) {
-              console.error("error for remediation of " + myEvent.pid + ": " + myRootCause.eventType);
+              console.error("error for remediation of " + myEvent.pid + " (" + myRootCause.eventType + "): " + JSON.stringify(err));
               addComment(myEvent.pid, "error when performing remediation " + JSON.stringify(err), function (err, res) {
                 if (err) {
                   return callback(err);
@@ -68,15 +72,16 @@ exports.handler = function (event, context, callback) {
             }
 
             var remediationLog = "Auto-remediation: " + remediationAction.title + " executed:\n " + remediationAction.description;
+            console.info("adding comment for executed remediation");
             addComment(myEvent.pid, remediationLog, function (err, res) {
               if (err) {
-                console.error("comment not added: " + remediationLog);
+                console.error("comment not added: " + remediationLog.replace("\n", ""));
                 return callback(err);
               } else {
-                console.info("commend added: " + remediationLog);
+                console.info("comment added: " + remediationLog.replace("\n", ""));
               }
 
-              callback(err, res);
+               return callback(err, res);
             });
 
 
@@ -100,7 +105,7 @@ exports.handler = function (event, context, callback) {
                 console.error("comment not added: " + relayLog);
                 return callback(err);
               } else {
-                console.info("commend added: " + relayLog);
+                console.info("comment added: " + relayLog);
               }
 
               callback(err, res);
@@ -117,6 +122,22 @@ exports.handler = function (event, context, callback) {
 
 };
 
+function checkAzureEnvironment(context) {
+  if (process.env['AzureWebJobsStorage'] != undefined) {
+    console.log = function(msg) {
+      context.log(msg);
+    }    
+    console.info = function(msg) {
+      context.log.info(msg);
+    }
+    console.warn = function(msg) {
+      context.log.warn(msg);
+    }
+    console.error = function(msg) {
+      context.log.error(msg);
+    }
+  }
+}
 
 function getRootCause(rankedEvents) {
   var rc = rankedEvents.find(function (element) {
@@ -135,7 +156,6 @@ function triggerRemediationAction(problem, rootCause, callback) {
   //let payload;
   switch (rootCause.eventType) {
 
-    
     case "CONNECTION_LOST":
     case "PGI_OF_SERVICE_UNAVAILABLE":
       remediationAction.title = "service now remediation";
