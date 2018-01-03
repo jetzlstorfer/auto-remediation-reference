@@ -12,15 +12,14 @@ const Event = require('./event');
 
 exports.handler = function (event, context, callback) {
   // check if called from azure, since azure does not support console.log
-  checkAzureEnvironment(context);
-
+  
   console.log('azure remediation start (console)');
   console.info("--- remediation script start ---");
   // console.info(JSON.stringify(event));
   var myEvent = new Event(event);
   var myProblem = myEvent; //.parseEvent();
 
-  console.info("parsed problem:");
+  console.info("parsed problem: ");
   console.info(myProblem.toString());
 
   if (!myProblem.isOpen) {

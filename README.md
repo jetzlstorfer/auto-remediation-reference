@@ -26,5 +26,8 @@ Configuration is stored in files under the config directory. You can either modi
 - run 'gradle apply' to deploy to AWS
 - Troubleshooting: add --info or --stacktrace option to gradle to get more insights
 
-## Run as Azure Functions App
-- to come
+## Deploy & Run as Azure Functions App
+- 
+
+
+

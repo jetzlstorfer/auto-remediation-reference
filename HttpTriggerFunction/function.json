@@ -8,7 +8,8 @@
       "name": "req",
       "route": "HttpTriggerJS/",
       "methods": [
-        "get", "post"
+        "get",
+        "post"
       ]
     },
     {
