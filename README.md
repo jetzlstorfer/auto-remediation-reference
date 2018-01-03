@@ -15,13 +15,16 @@ Configuration is stored in files under the config directory. You can either modi
 ## Run local
 ### via lambda-local module
 - execute local lambda call: `.\node_modules\.bin\lambda-local -l remediation.js -h handler -e test\events\remediation-rootcause.js -t 7` (first run `npm install` to download all needed dependencies)
-### via native node process
+### via native node process (as http server)
 - set environment variable NODE_ENV needed for determining correct configuration file, e.g., `SET NODE_ENV=demo1` then run `node index-local.js`
 - execute local without lambda: `node index-local.js` starts the webserver on 127.0.0.1:1337 waiting for requests, send request with problem details as POST payload  to trigger remediation
+### via native node process (as polling server asking periodically checking for new problems)
+- to come
 
-## Deploy on AWS
+## Deploy & Run as AWS Lambda
 - run 'gradle plan' to see what will be deployed
 - run 'gradle apply' to deploy to AWS
 - Troubleshooting: add --info or --stacktrace option to gradle to get more insights
 
-
+## Run as Azure Functions App
+- to come

@@ -1,7 +1,7 @@
 {
   "name": "autoremediation",
   "version": "1.0.0",
-  "description": "Lambda functions for autoremediation scenarios",
+  "description": "Functions for autoremediation scenarios",
   "author": "Juergen Etzlstorfer <juergen.etzlstorfer@dynatrace.com>, reusing work from Rafal Psciuk",
   "repository": "",
   "scripts": {

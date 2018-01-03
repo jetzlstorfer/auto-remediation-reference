@@ -30,6 +30,7 @@ function getOpenProblems(problems) {
   return openProblems;
 }
 
-
+// fetch problems at start
 fetchProblems();
+// fetch problems periodically
 var myInterval = setInterval(fetchProblems, config.pollingInterval*1000);
