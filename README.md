@@ -27,7 +27,11 @@ Configuration is stored in files under the config directory. You can either modi
 - Troubleshooting: add --info or --stacktrace option to gradle to get more insights
 
 ## Deploy & Run as Azure Functions App
-- 
+- deploy with Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest): 
+ login to your azure account with: `az login`
+ create your resource group to contain your function: `az group create --name EXAMPLERESOURCEGROUP --location "westeurope"`
+ deploy your azure infrastructure with and directly checkout code form this repo: `az group deployment create --name ExampleDeployment --resource-group EXAMPLERESOURCEGROUP --template-file .\HttpTriggerFunction\azure-deploy.json --parameters servicePlanName=YOURPLANNAME functionAppName=YOURFUNCTIONNAME sourceBranch=MASTER_OR_BRANCH`
+
 
 
 
