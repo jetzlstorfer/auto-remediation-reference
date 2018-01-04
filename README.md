@@ -14,7 +14,14 @@ Configuration is stored in files under the config directory. You can either modi
 
 ## Run local
 ### via lambda-local module
-- execute local lambda call: `.\node_modules\.bin\lambda-local -l remediation.js -h handler -e test\events\remediation-rootcause.js -t 7` (first run `npm install` to download all needed dependencies)
+- execute local lambda call: 
+```bash
+.\node_modules\.bin\lambda-local -l remediation.js \
+-h handler \
+-e test\events\remediation-rootcause.js \
+-t 7
+```
+(first run `npm install` to download all needed dependencies)
 ### via native node process (as http server)
 - set environment variable NODE_ENV needed for determining correct configuration file, e.g., `SET NODE_ENV=demo1` then run `node index-local.js`
 - execute local without lambda: `node index-local.js` starts the webserver on 127.0.0.1:1337 waiting for requests, send request with problem details as POST payload  to trigger remediation
@@ -22,15 +29,27 @@ Configuration is stored in files under the config directory. You can either modi
 - to come
 
 ## Deploy & Run as AWS Lambda
-- run 'gradle plan' to see what will be deployed
-- run 'gradle apply' to deploy to AWS
-- Troubleshooting: add --info or --stacktrace option to gradle to get more insights
+- run `gradle plan` to see what will be deployed
+- run `gradle apply` to deploy to AWS
+- Troubleshooting: add `--info` or `--stacktrace` option to gradle to get more insights
 
 ## Deploy & Run as Azure Functions App
 - deploy with Azure CLI (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest): 
- login to your azure account with: `az login`
- create your resource group to contain your function: `az group create --name EXAMPLERESOURCEGROUP --location "westeurope"`
- deploy your azure infrastructure with and directly checkout code form this repo: `az group deployment create --name ExampleDeployment --resource-group EXAMPLERESOURCEGROUP --template-file .\HttpTriggerFunction\azure-deploy.json --parameters servicePlanName=YOURPLANNAME functionAppName=YOURFUNCTIONNAME sourceBranch=MASTER_OR_BRANCH`
+
+  - login to your azure account with: `az login`
+  - create your resource group to contain your function: 
+  ````
+  az group create --name EXAMPLERESOURCEGROUP \
+  --location "westeurope"
+  ````
+  - deploy your azure infrastructure with and directly checkout code form this repo: 
+  ```
+  az group deployment create \
+  --name ExampleDeployment \
+  --resource-group EXAMPLERESOURCEGROUP \
+  --template-file .\HttpTriggerFunction\azure-deploy.json \
+  --parameters servicePlanName=YOURPLANNAME functionAppName=YOURFUNCTIONNAME sourceBranch=MASTER_OR_BRANCH
+  ```
 
 
 
