@@ -15,11 +15,11 @@ Configuration is stored in files under the config directory. You can either modi
 ## Run local
 ### via lambda-local module
 - execute local lambda call: 
-```bash
+```
 .\node_modules\.bin\lambda-local -l remediation.js \
--h handler \
--e test\events\remediation-rootcause.js \
--t 7
+  -h handler \
+  -e test\events\remediation-rootcause.js \
+  -t 7
 ```
 (first run `npm install` to download all needed dependencies)
 ### via native node process (as http server)
@@ -40,15 +40,15 @@ Configuration is stored in files under the config directory. You can either modi
   - create your resource group to contain your function: 
   ````
   az group create --name EXAMPLERESOURCEGROUP \
-  --location "westeurope"
+    --location "westeurope"
   ````
   - deploy your azure infrastructure with and directly checkout code form this repo: 
   ```
   az group deployment create \
-  --name ExampleDeployment \
-  --resource-group EXAMPLERESOURCEGROUP \
-  --template-file .\HttpTriggerFunction\azure-deploy.json \
-  --parameters servicePlanName=YOURPLANNAME functionAppName=YOURFUNCTIONNAME sourceBranch=MASTER_OR_BRANCH
+    --name ExampleDeployment \
+    --resource-group EXAMPLERESOURCEGROUP \
+    --template-file .\HttpTriggerFunction\azure-deploy.json \
+    --parameters servicePlanName=YOURPLANNAME functionAppName=YOURFUNCTIONNAME sourceBranch=MASTER_OR_BRANCH
   ```
 
 
