@@ -18,4 +18,9 @@ config.snowTenant = '';
 config.snowUsername = '';
 config.snowToken = '';
 
+config.snmp = {
+	managerIp: "127.0.0.1", // change to IP Address of SNMP Trap Receiver if not localhost
+	trapPort: 162
+};
+
 module.exports = config;

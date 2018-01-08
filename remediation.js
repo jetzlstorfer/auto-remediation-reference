@@ -188,14 +188,24 @@ function triggerRemediationAction(problem, rootCause, callback) {
 
 
 function triggerRelayAction(problem, callback) {
-  let relayAction = {
+  var relayAction = {
     title: '',
     description: ''
   };
+  const SnmpTrapV1Action = require('./relayactions/snmp-trap');
+  const snmpAction = new SnmpTrapV1Action();
 
-  // execute relay 
-  // add relayAction to callback
-
+  var payload = {
+	  "pid": problem.pid,
+	  "displayName": "Problem " + problem.displayName,
+	  "message": config.cluster + config.environment + "/#problems/problemdetails;pid=" + problem.pid
+  };
+  snmpAction.trigger(payload, function(err, res) {
+	  if (err) {
+		  console.error("error: " + JSON.stringify(err));
+	  }
+	  return callback(err, res, relayAction);
+  });
 }
 
 function addStatusComment(problemInfo, callback) {
