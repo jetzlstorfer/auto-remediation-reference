@@ -1,10 +1,10 @@
-# Auto-remediation framework
+# Auto-remediation Framework
 
 This project shows how the Dynatrace problem notification integration and the Dynatrace API can be leveraged to trigger remediation actions provided by different providers, e.g., Ansible Tower, ServiceNow.
 Therefore, this script acts as a hub and reveives the Dynatrace problem as an input, fetches additional problem data via the Dynatrace API, classifies the problem and then triggers a suitable remediation action (which has to be pre-configured). Along the script execution, all relevant steps are reported as comments directly to Dynatrace. Thus, all triggered actions can be seen at one central place directly when accessing the problem in the Dynatrace web interface. 
 
 ### :information_source: Disclaimer :information_source: 
-Please note that this script serves more as a reference implementation to show the basic capabilities and to demo a sample remediation workflow, but has to be tailored to the concrete needs in specific environments. 
+Please note that this script serves more as a reference implementation to show some basic capabilities and to demo a sample remediation workflow, but has to be tailored to the concrete needs in specific environments. 
 It is further not officially supported by the Dynatrace support. In case of questions, please open an issue or reach out to [@jetzlstorfer](https://twitter.com/jetzlstorfer)
 
 ## Configuration

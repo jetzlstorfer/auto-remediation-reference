@@ -3,7 +3,7 @@ const config = require('../config/main');
 const remediationHandler = require('../remediation');
 
 module.exports = function (context, req) {
-  context.log('Function recevied a request.');
+  context.log('Function received a request.');
 
   if (req.method == 'POST') {
     // context.log('payload: ' + JSON.stringify(req.body));
@@ -21,5 +21,8 @@ module.exports = function (context, req) {
     });
 
   } // end req.method == POST
-
+  else {
+    context.log('wrong HTTP method type (only POST is currently supported).');
+    context.done();
+  }
 };

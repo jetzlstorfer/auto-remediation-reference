@@ -74,3 +74,4 @@ terraformfiles/.terraform/plugins/windows_amd64/lock.json
 test/
 config/config.demo-az.js
 config/config.demo-local.js
+scripts/
