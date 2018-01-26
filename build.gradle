@@ -14,7 +14,7 @@ task npmInstallModules (type:Exec, dependsOn: 'cleanNodeModules') {
 
 task deploymentRemediationZipFiles(type: Zip, dependsOn: 'npmInstallModules') {
    from '.'
-   include 'dynatrace_utils.js'
+   include 'utils/**'
    include 'event.js'
    include 'config/main.js'
    include 'config/config.global.js'

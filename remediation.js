@@ -1,29 +1,28 @@
 'use strict';
 /* jshint node: true */
+
 const config = require('./config/main');
-
-const DynatraceUtils = require('./dynatrace_utils');
-const dtUtils = new DynatraceUtils(config.cluster + config.environment, config.apiToken);
-
+const DynatraceUtils = require('./utils/dynatrace_utils');
+const AzureUtils = require('./utils/azure_utils');
 const Event = require('./event');
 
+const dtUtils = new DynatraceUtils(config.cluster + config.environment, config.apiToken);
+const azUtils = new AzureUtils();
 
-
-
+// main function
 exports.handler = function (event, context, callback) {
   // check if called from azure, since azure does not support console.log
-  
-  console.log('azure remediation start (console)');
+  azUtils.checkAzureEnvironment(context); 
+
   console.info("--- remediation script start ---");
-  // console.info(JSON.stringify(event));
   var myEvent = new Event(event);
-  var myProblem = myEvent; //.parseEvent();
+  var myProblem = myEvent; 
 
   console.info("parsed problem: ");
   console.info(myProblem.toString());
 
   if (!myProblem.isOpen) {
-    // problem already resolved
+    // problem already resolved or merged
     console.info("adding status comment for " + myProblem.pid + ": " + myProblem.state);
     addStatusComment(myProblem, function (err, res) {
       if (err != null) {
@@ -80,13 +79,15 @@ exports.handler = function (event, context, callback) {
                 console.info("comment added: " + remediationLog.replace("\n", ""));
               }
 
-               return callback(err, res);
+              return callback(err, res);
             });
 
 
           });
-        } else {
-          console.info("triggerRelayAction"); 
+        } 
+        // no root cause found
+        else {
+          console.info("triggerRelayAction");
           // no root cause found
           triggerRelayAction(myProblem, function (err, res, relayAction) {
             if (err) {
@@ -111,32 +112,11 @@ exports.handler = function (event, context, callback) {
             });
           });
         }
-
       }
-
     }); // end getProblemDetails
   }
-
-
-
 };
 
-function checkAzureEnvironment(context) {
-  if (process.env['AzureWebJobsStorage'] != undefined) {
-    console.log = function(msg) {
-      context.log(msg);
-    }    
-    console.info = function(msg) {
-      context.log.info(msg);
-    }
-    console.warn = function(msg) {
-      context.log.warn(msg);
-    }
-    console.error = function(msg) {
-      context.log.error(msg);
-    }
-  }
-}
 
 function getRootCause(rankedEvents) {
   var rc = rankedEvents.find(function (element) {
@@ -152,7 +132,7 @@ function triggerRemediationAction(problem, rootCause, callback) {
     description: ''
   };
   let payload;
-  //let payload;
+  
   switch (rootCause.eventType) {
 
     case "CONNECTION_LOST":
@@ -187,7 +167,7 @@ function triggerRemediationAction(problem, rootCause, callback) {
       console.info("remediation for rootCause: " + rootCause.eventType);
       const StackStormRemediationAction = require('./remediationactions/stackstorm');
       const st2action = new StackStormRemediationAction(config.st2ApiUrl, config.st2Token);
-      
+
       st2action.restart(payload, function (err, res) {
         if (err) {
           console.error("error st2action: " + JSON.stringify(err));
