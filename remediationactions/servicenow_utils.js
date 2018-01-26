@@ -12,15 +12,19 @@ function ServiceNowUtils(tenant, username, token) {
 ServiceNowUtils.prototype.triggerRemediation = function(payload, callback) {
 	var req = sa.post(this.url)
 	.set('authorization', this.token)
-  .set('Content-Type', 'application/json')
+	.set('Content-Type', 'application/json')
+	.timeout({
+    response: 5000,  // Wait 5 seconds for the server to start sending,
+    deadline: 60000, // but allow 1 minute for the file to finish loading.
+  })
 	.send( 
 		payload
 	);
 
 	req.end(function(error, resp) {
-		// if (error) {
-		// 	console.log("error: " + JSON.stringify(error));
-		// }
+		if (error) {
+			console.error("error triggering servicenow: " + JSON.stringify(error));
+		}
 		return callback(error, resp);
 	});
 }

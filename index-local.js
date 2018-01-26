@@ -7,7 +7,7 @@ const querystring = require('querystring');
 const config = require('./config/main');
 
 // import lambda function
-const lambdahandler = require('./remediation');
+const remediationHandler = require('./remediation');
 
 http.createServer(function (req, res) {
 
@@ -33,8 +33,8 @@ http.createServer(function (req, res) {
       }
 
       // call lambda
-      // console.log(lambdahandler);
-      lambdahandler.handler(JSON.parse(jsonString), '', function (err, res) {
+      // console.log(remediationHandler);
+      remediationHandler.handler(JSON.parse(jsonString), '', function (err, res) {
         if (err) {
           console.error("error executing local script: " + JSON.stringify(err));
         } else {

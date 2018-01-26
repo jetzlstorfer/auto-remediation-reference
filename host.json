@@ -1,0 +1,14 @@
+{
+  "functions": [
+    "HttpTriggerFunction"
+  ],
+  "functionTimeout": "00:02:00",
+  "http": {
+    "routePrefix": "api",
+    "maxConcurrentRequests": 20,
+    "maxOutstandingRequests": 20
+  },
+  "logger": {
+    "defaultLevel": "Information"
+  }
+}
