@@ -15,9 +15,8 @@ exports.handler = function (event, context, callback) {
   azUtils.checkAzureEnvironment(context); 
 
   console.info("--- remediation script start ---");
-  // console.info(JSON.stringify(event));
   var myEvent = new Event(event);
-  var myProblem = myEvent; //.parseEvent();
+  var myProblem = myEvent; 
 
   console.info("parsed problem: ");
   console.info(myProblem.toString());
@@ -133,7 +132,7 @@ function triggerRemediationAction(problem, rootCause, callback) {
     description: ''
   };
   let payload;
-  //let payload;
+  
   switch (rootCause.eventType) {
 
     case "CONNECTION_LOST":
